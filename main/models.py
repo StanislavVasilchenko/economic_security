@@ -54,7 +54,7 @@ class Agent(models.Model):
     name = models.CharField(max_length=60, unique=True, verbose_name='контр-агент')
     email = models.EmailField(verbose_name='Электронная почта', **NULLABLE)
     phone = models.CharField(max_length=15, verbose_name='Телефон', **NULLABLE)
-    inn = models.IntegerField(verbose_name='ИНН')
+    inn = models.CharField(max_length=12, verbose_name='ИНН')
     departure_date = models.DateField(verbose_name='Дата отправки письма', **NULLABLE)
     date_of_inspection = models.DateField(verbose_name='Дата проверки', **NULLABLE)
     counterparty_form = models.CharField(max_length=50, choices=FORM, verbose_name='Форма КА', default=ENTITY)
