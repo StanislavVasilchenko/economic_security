@@ -17,6 +17,14 @@ class FileReport(models.Model):
     file_path = models.CharField(max_length=255, verbose_name="Путь к файлу")
     file_name = models.CharField(max_length=255, verbose_name="Имя файла")
     date_created = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
+    agent = models.ForeignKey('Agent', on_delete=models.PROTECT, verbose_name="Агент", **NULLABLE)
+
+    def __str__(self):
+        return f"{self.file_name}"
+
+    class Meta:
+        verbose_name = "Отчет"
+        verbose_name_plural = "Отчеты"
 
 
 class Agent(models.Model):
@@ -50,10 +58,6 @@ class Agent(models.Model):
     departure_date = models.DateField(verbose_name='Дата отправки письма', **NULLABLE)
     date_of_inspection = models.DateField(verbose_name='Дата проверки', **NULLABLE)
     counterparty_form = models.CharField(max_length=50, choices=FORM, verbose_name='Форма КА', default=ENTITY)
-    file_report = models.ForeignKey(FileReport,
-                                    on_delete=models.CASCADE,
-                                    verbose_name='Отчет отправки письма',
-                                    **NULLABLE)
     report_status = models.CharField(max_length=50,
                                      choices=ReportStatus.choices,
                                      verbose_name='Статус проверки',
@@ -64,6 +68,6 @@ class Agent(models.Model):
         return f'{self.name} - ({self.email} статус: {self.report_status})'
 
     class Meta:
-        verbose_name = ''
-        verbose_name_plural = ''
+        verbose_name = 'Агент'
+        verbose_name_plural = 'Агенты'
         ordering = ['-date_of_inspection']
