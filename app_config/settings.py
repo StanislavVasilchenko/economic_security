@@ -9,9 +9,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
-from private_keys import DB_PASSWORD, DB_NAME, DB_USER, DB_PORT, DB_HOST
+
+from celery.schedules import crontab
+
+from private_keys import (DB_PASSWORD, DB_NAME, DB_USER, DB_PORT, DB_HOST, BROKER_URL, RESULT_BACKEND,
+                          HOST_USER, HOST_PASSWORD, PORT, HOST)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_beat',
 
     'users',
     'main',
@@ -133,3 +138,23 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+CELERY_BROKER_URL = BROKER_URL
+CELERY_RESULT_BACKEND = RESULT_BACKEND
+CELERY_TIMEZONE = 'Europe/Moscow'
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = HOST
+EMAIL_PORT = PORT
+EMAIL_HOST_USER = HOST_USER
+EMAIL_HOST_PASSWORD = HOST_PASSWORD
+EMAIL_USE_SSL = True
+
+CELERY_BEAT_SCHEDULE = {
+    'get_agents_for_inspection': {
+        'task': 'main.tasks.get_agents_for_inspection',
+        'schedule': crontab(hour='9', minute='00'),
+    }
+}
