@@ -6,9 +6,9 @@ from users.models import NULLABLE
 class ReportStatus(models.TextChoices):
     """Статус проверки контр-агента"""
 
-    VERIFIED = "verified", "Проверен"
-    NOT_VERIFIED = "not_verified", "Не проверен"
-    UNDER_INSPECTION = "under_inspection", "На проверке"
+    VERIFIED = "Проверен", "Проверен"
+    NOT_VERIFIED = "Не проверен", "Не проверен"
+    UNDER_INSPECTION = "На проверке", "На проверке"
 
 
 class FileReport(models.Model):
