@@ -2,9 +2,14 @@
 {% block content %}
 
         <p class="d-inline-flex gap-1">
-            <a class="btn btn-success" href="{% url 'main:create-agent' %}">
-                Добавить КА
-            </a>
+            <form method="post" action="{% url 'main:send' %}">
+                {% csrf_token %}
+            <button class="btn btn-outline-danger" type="submit"
+                    name="send_agent_report" value="send_agent_report">Отправить на проверку</button>
+            </form>
+{#            <a class="btn btn-success" methods="sub" href="#">#}
+{#                Отправить на проверку#}
+{#            </a>#}
         </p>
 
 

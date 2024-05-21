@@ -12,7 +12,8 @@
                 </div>
                 <div class="card-body">
                     {% include 'main/includes/inc_agents_for inspections.html' %}
-                    <button type="button" class="w-100 btn btn-lg btn-primary">Просмотр</button>
+                    <a href={% url 'main:agents-inspections' %} type="button"
+                           class="w-100 btn btn-lg btn-primary">Перейти</a>
                 </div>
             </div>
         </div>
