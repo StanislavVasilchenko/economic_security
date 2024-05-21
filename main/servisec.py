@@ -34,6 +34,8 @@ def change_after_send_email(agent: Agent):
 def context_data_index():
     date_inspection = datetime.now().date() + timedelta(days=7)
     context_data = {
-        'agents_count': Agent.objects.filter(date_of_inspection=date_inspection, email__isnull=False).count()
+        'agents_count': Agent.objects.filter(date_of_inspection=date_inspection,
+                                             email__isnull=False,
+                                             report_status=ReportStatus.NOT_VERIFIED).count()
     }
     return context_data
