@@ -32,10 +32,13 @@ def change_after_send_email(agent: Agent):
 
 
 def context_data_index():
+    """Данные для индексной страницы
+    agents_count - Кол-во Агентов которые должны быть проверены в ближайшие 7 дней"""
     date_inspection = datetime.now().date() + timedelta(days=7)
     context_data = {
         'agents_count': Agent.objects.filter(date_of_inspection=date_inspection,
                                              email__isnull=False,
-                                             report_status=ReportStatus.NOT_VERIFIED).count()
+                                             report_status=ReportStatus.NOT_VERIFIED).count(),
+        'agents_under_inspection': Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION).count()
     }
     return context_data
