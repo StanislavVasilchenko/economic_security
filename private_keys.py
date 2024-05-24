@@ -25,3 +25,5 @@ PORT = os.getenv('EMAIL_PORT')
 
 URL_UL = os.getenv('URL_UL')
 URL_FL = os.getenv('URL_FL')
+
+FILE_NAME = os.getenv('FILE_NAME')

@@ -8,10 +8,12 @@
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm border-primary">
                 <div class="card-header py-3 text-bg-primary border-primary">
-                    <h4 class="my-0 fw-normal">КА для проверки</h4>
+                    <h4 class="my-0 fw-normal">Проверить</h4>
                 </div>
                 <div class="card-body">
+
                     {% include 'main/includes/inc_agents_for inspections.html' %}
+
                     <a href={% url 'main:agents-inspections' %} type="button"
                            class="w-100 btn btn-lg btn-primary">Перейти</a>
                 </div>
@@ -22,7 +24,7 @@
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm border-primary">
                 <div class="card-header py-3 text-bg-primary border-primary">
-                    <h4 class="my-0 fw-normal">Enterprise</h4>
+                    <h4 class="my-0 fw-normal">На проверке</h4>
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">$29<small
@@ -42,7 +44,7 @@
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm border-primary">
                 <div class="card-header py-3 text-bg-primary border-primary">
-                    <h4 class="my-0 fw-normal">Enterprise</h4>
+                    <h4 class="my-0 fw-normal">Истек срок проверки</h4>
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">$29<small

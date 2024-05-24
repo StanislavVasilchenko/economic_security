@@ -152,13 +152,17 @@ EMAIL_HOST_USER = HOST_USER
 EMAIL_HOST_PASSWORD = HOST_PASSWORD
 EMAIL_USE_SSL = False
 
-CELERY_BEAT_SCHEDULE = {
+# CELERY_BEAT_SCHEDULE = {
     # 'get_agents_for_inspection': {
     #     'task': 'main.tasks.get_agents_for_inspection',
     #     'schedule': crontab(hour='9', minute='00'),
     # },
-    'get_agents_for_inspection': {
-        'task': 'main.tasks.get_agents_for_inspection',
-        'schedule': timedelta(seconds=20),
-    },
-}
+    # 'get_agents_for_inspection': {
+    #     'task': 'main.tasks.get_agents_for_inspection',
+    #     'schedule': timedelta(seconds=30),
+    # },
+    # 'check_date_of_inspection': {
+    #     'task': 'main.tasks.check_date_of_inspection',
+    #     'schedule': timedelta(seconds=20),
+#     },
+# }

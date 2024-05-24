@@ -9,7 +9,7 @@ class AgentAdmin(admin.ModelAdmin):
                     'departure_date', 'date_of_inspection', 'counterparty_form',
                     'report_status', 'is_active')
     search_fields = ('name', 'email', 'inn')
-    list_filter = ('report_status', 'counterparty_form',)
+    list_filter = ('report_status', 'counterparty_form', 'date_of_inspection')
 
 
 @admin.register(FileReport)

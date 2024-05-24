@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView
@@ -52,5 +52,5 @@ class AgentCreateView(CreateView):
 def send_agent_report(request):
     """Ручная отправка писем """
     if request.method == 'POST':
-        get_agents_for_inspection()
-        return render(request, 'main/agents_for_inspections.html')
+        get_agents_for_inspection.delay()
+        return HttpResponseRedirect(reverse_lazy('main:index'))
