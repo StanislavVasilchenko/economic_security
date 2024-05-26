@@ -14,7 +14,6 @@ def send_email_to_agent(agent: Agent):
         subject=f'Опросник КА {agent.name} ИНН {agent.inn}, договор размещения оборудования ООО "Сеть"',
         body=f'Сылка на опросник : {URL_UL}'
         if agent.counterparty_form == 'Юридическое лицо' else f'Сылка на опросник :{URL_FL}',
-
         from_email=EMAIL_HOST_USER,
         to=[agent.email],
         bcc=[EMAIL_HOST_USER]
@@ -33,12 +32,17 @@ def change_after_send_email(agent: Agent):
 
 def context_data_index():
     """Данные для индексной страницы
-    agents_count - Кол-во Агентов которые должны быть проверены в ближайшие 7 дней"""
+    agents_count - Кол-во Агентов которые должны быть проверены в ближайшие 7 дней
+    agents_under_inspection - Кол-во Агентов которым отправлены опросники
+    verification_period_expired - Кол-во Агентов с просроченной датой проверки"""
     date_inspection = datetime.now().date() + timedelta(days=7)
+
     context_data = {
-        'agents_count': Agent.objects.filter(date_of_inspection=date_inspection,
+        'agents_count': Agent.objects.filter(date_of_inspection__lte=date_inspection,
+                                             date_of_inspection__gte=datetime.now(),
                                              email__isnull=False,
                                              report_status=ReportStatus.NOT_VERIFIED).count(),
-        'agents_under_inspection': Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION).count()
+        'agents_under_inspection': Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION).count(),
+        'verification_period_expired': Agent.objects.filter(date_of_inspection__lt=date_inspection).count()
     }
     return context_data
