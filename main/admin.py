@@ -12,13 +12,18 @@ class AgentAdmin(admin.ModelAdmin):
                     'report_status', 'is_active')
     search_fields = ('name', 'email', 'inn')
     list_filter = ('report_status', 'counterparty_form', 'date_of_inspection')
-    actions = ['change_status', ]
+    actions = ['change_status', 'change_date', ]
     ordering = ('-date_of_inspection',)
 
     def change_status(self, request, queryset):
         queryset.update(report_status=ReportStatus.VERIFIED)
 
     change_status.short_description = 'Изменить статус на проверен'
+
+    def change_date(self, request, queryset):
+        queryset.update(date_of_inspection=datetime.strptime('2020-01-01', '%Y-%m-%d'))
+
+    change_date.short_description = 'Заменить пустую дату'
 
 
 @admin.register(FileReport)

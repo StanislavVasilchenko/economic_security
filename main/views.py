@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
+from main.forms import AgentForm
 from main.models import Agent, ReportStatus
 from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection
 from main.tasks import get_agents_for_inspection
@@ -34,7 +35,7 @@ class AgentDetailView(DetailView):
 
 class AgentUpdateView(UpdateView):
     model = Agent
-    fields = '__all__'
+    form_class = AgentForm
     success_url = reverse_lazy('main:index')
 
 
@@ -51,7 +52,7 @@ class AgentForInspectionView(TemplateView):
 
 class AgentCreateView(CreateView):
     model = Agent
-    fields = '__all__'
+    form_class = AgentForm
     success_url = reverse_lazy('main:agents-list')
 
 
