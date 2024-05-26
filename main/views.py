@@ -1,12 +1,11 @@
 from datetime import datetime, timedelta
 
 from django.http import HttpResponse, HttpResponseRedirect
-from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView
 
 from main.models import Agent, ReportStatus
-from main.servisec import context_data_index
+from main.servisec import context_data_index, agents_for_inspection
 from main.tasks import get_agents_for_inspection
 
 
@@ -35,17 +34,8 @@ class AgentForInspectionView(TemplateView):
     model = Agent
 
     def get_context_data(self, **kwargs):
-        date_inspection = datetime.now().date() + timedelta(days=7)
         context_data = super().get_context_data(**kwargs)
-        min_day = date_inspection - timedelta(days=7)
-        print(min_day)
-        print(date_inspection)
-        context_data['object_list'] = Agent.objects.filter(date_of_inspection__gte=min_day,
-                                                           date_of_inspection__lte=date_inspection,
-                                                           email__isnull=False,
-                                                           report_status=ReportStatus.VERIFIED,
-                                                           )
-        print(context_data['object_list'])
+        context_data['object_list'] = agents_for_inspection()
         return context_data
 
 

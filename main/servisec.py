@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from typing import List
 
 from celery.worker.consumer import agent
 from django.core.mail import EmailMessage
@@ -38,11 +39,19 @@ def context_data_index():
     date_inspection = datetime.now().date() + timedelta(days=7)
 
     context_data = {
-        'agents_count': Agent.objects.filter(date_of_inspection__lte=date_inspection,
-                                             date_of_inspection__gte=datetime.now(),
-                                             email__isnull=False,
-                                             report_status=ReportStatus.NOT_VERIFIED).count(),
+        'agents_count': agents_for_inspection().count(),
         'agents_under_inspection': Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION).count(),
         'verification_period_expired': Agent.objects.filter(date_of_inspection__lt=date_inspection).count()
     }
     return context_data
+
+
+def agents_for_inspection() -> List[Agent]:
+    """Выбор агентов для проверки которые были ранее провернены и у которых ьприблежается очередная
+    дата проверки"""
+    date_inspection = datetime.now()
+    agents = Agent.objects.filter(date_of_inspection__gte=date_inspection,
+                                  date_of_inspection__lte=date_inspection + timedelta(days=7),
+                                  email__isnull=False,
+                                  report_status=ReportStatus.VERIFIED)
+    return agents

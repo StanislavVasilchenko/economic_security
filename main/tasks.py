@@ -3,16 +3,13 @@ from datetime import datetime, timedelta
 from celery import shared_task
 
 from main.models import Agent, ReportStatus
-from main.servisec import send_email_to_agent, change_after_send_email
+from main.servisec import send_email_to_agent, change_after_send_email, agents_for_inspection
 
 
 @shared_task
 def get_agents_for_inspection():
     """Задаса по выбору КА дата проверки которых совпадает с текущей датой и """
-    time_now = datetime.now() + timedelta(days=7)
-    agents = Agent.objects.filter(date_of_inspection__lt=time_now,
-                                  email__isnull=False,
-                                  report_status=ReportStatus.NOT_VERIFIED)
+    agents = agents_for_inspection()
     if agents.count() > 0:
         for agent in agents:
             print(agent.email)
