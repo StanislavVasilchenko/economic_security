@@ -1,13 +1,13 @@
 {% extends 'main/base.html' %}
 {% block content %}
 
-        <p class="d-inline-flex gap-1">
-            <form method="post" action="{% url 'main:send' %}">
-                {% csrf_token %}
-            <button class="btn btn-outline-danger" type="submit"
-                    name="send_agent_report" value="send_agent_report">Отправить на проверку</button>
-            </form>
-        </p>
+{#        <p class="d-inline-flex gap-1">#}
+{#            <form method="post" action="{% url 'main:send' %}">#}
+{#                {% csrf_token %}#}
+{#            <button class="btn btn-outline-danger" type="submit"#}
+{#                    name="send_agent_report" value="send_agent_report">Отправить на проверку</button>#}
+{#            </form>#}
+{#        </p>#}
 
 
     <table class="table">
@@ -45,7 +45,7 @@
                 </tr>
             {% endfor %}
         {% else %}
-            <h1 class="text-success">Нет Агентов на проверку</h1>
+            <h1 class="text-warning">Нет Агентов на проверке</h1>
         {% endif %}
         </tbody>
     </table>
