@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView
 
 from main.models import Agent, ReportStatus
-from main.servisec import context_data_index, agents_for_inspection
+from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection
 from main.tasks import get_agents_for_inspection
 
 
@@ -50,3 +50,13 @@ def send_agent_report(request):
     if request.method == 'POST':
         get_agents_for_inspection.delay()
         return HttpResponseRedirect(reverse_lazy('main:index'))
+
+
+class AgentPendingConfirmationView(TemplateView):
+    model = Agent
+    template_name = 'main/agents_pending_confirmation.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = agents_under_inspection()
+        return context_data

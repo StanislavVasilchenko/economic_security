@@ -1,7 +1,8 @@
 from django.urls import path
 
 from main.apps import MainConfig
-from main.views import HomeView, AgentListView, AgentForInspectionView, send_agent_report, AgentCreateView
+from main.views import (HomeView, AgentListView, AgentForInspectionView, send_agent_report,
+                        AgentCreateView, AgentPendingConfirmationView)
 
 app_name = MainConfig.name
 
@@ -11,4 +12,6 @@ urlpatterns = [
     path('inspection/', AgentForInspectionView.as_view(), name='agents-inspections'),
     path('send/', send_agent_report, name='send'),
     path('create/', AgentCreateView.as_view(), name='create-agent'),
+
+    path('under_inspection/', AgentPendingConfirmationView.as_view(), name='under_inspection'),
 ]

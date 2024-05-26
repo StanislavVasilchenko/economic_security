@@ -40,14 +40,14 @@ def context_data_index():
 
     context_data = {
         'agents_count': agents_for_inspection().count(),
-        'agents_under_inspection': Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION).count(),
+        'agents_under_inspection': agents_under_inspection().count(),
         'verification_period_expired': Agent.objects.filter(date_of_inspection__lt=date_inspection).count()
     }
     return context_data
 
 
 def agents_for_inspection() -> List[Agent]:
-    """Выбор агентов для проверки которые были ранее провернены и у которых ьприблежается очередная
+    """Выбор агентов для проверки которые были ранее провернены и у которых приблежается очередная
     дата проверки"""
     date_inspection = datetime.now()
     agents = Agent.objects.filter(date_of_inspection__gte=date_inspection,
@@ -55,3 +55,15 @@ def agents_for_inspection() -> List[Agent]:
                                   email__isnull=False,
                                   report_status=ReportStatus.VERIFIED)
     return agents
+
+
+def agents_under_inspection() -> List[Agent]:
+    """Выбор агентов которым отправлены письма и находящихся на проверке"""
+    agents = Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION)
+    return agents
+
+
+def agents_without_inspection() -> List[Agent]:
+    """Выбор аггентов без проверки"""
+    agents = Agent.objects.filter()
+    ...
