@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
 from main.models import Agent, ReportStatus
 from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection
@@ -28,6 +28,16 @@ class AgentListView(ListView):
         return context_data
 
 
+class AgentDetailView(DetailView):
+    model = Agent
+
+
+class AgentUpdateView(UpdateView):
+    model = Agent
+    fields = '__all__'
+    success_url = reverse_lazy('main:index')
+
+
 class AgentForInspectionView(TemplateView):
     """Выбор КА для проверки"""
     template_name = 'main/agents_for_inspections.html'
@@ -45,13 +55,6 @@ class AgentCreateView(CreateView):
     success_url = reverse_lazy('main:agents-list')
 
 
-def send_agent_report(request):
-    """Ручная отправка писем """
-    if request.method == 'POST':
-        get_agents_for_inspection.delay()
-        return HttpResponseRedirect(reverse_lazy('main:index'))
-
-
 class AgentPendingConfirmationView(TemplateView):
     model = Agent
     template_name = 'main/agents_pending_confirmation.html'
@@ -60,3 +63,10 @@ class AgentPendingConfirmationView(TemplateView):
         context_data = super().get_context_data(**kwargs)
         context_data['object_list'] = agents_under_inspection()
         return context_data
+
+
+def send_agent_report(request):
+    """Ручная отправка писем """
+    if request.method == 'POST':
+        get_agents_for_inspection.delay()
+        return HttpResponseRedirect(reverse_lazy('main:index'))

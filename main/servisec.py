@@ -27,6 +27,7 @@ def change_after_send_email(agent: Agent):
     time_now = datetime.now().strftime('%Y-%m-%d')
     agent.report_status = ReportStatus.UNDER_INSPECTION
     agent.departure_date = time_now
+    agent.date_of_inspection = None
 
     agent.save()
 
@@ -36,12 +37,11 @@ def context_data_index():
     agents_count - Кол-во Агентов которые должны быть проверены в ближайшие 7 дней
     agents_under_inspection - Кол-во Агентов которым отправлены опросники
     verification_period_expired - Кол-во Агентов с просроченной датой проверки"""
-    date_inspection = datetime.now().date() + timedelta(days=7)
 
     context_data = {
         'agents_count': agents_for_inspection().count(),
         'agents_under_inspection': agents_under_inspection().count(),
-        'verification_period_expired': Agent.objects.filter(date_of_inspection__lt=date_inspection).count()
+        'verification_period_expired': agents_expired_inspection().count()
     }
     return context_data
 
@@ -62,6 +62,10 @@ def agents_under_inspection() -> List[Agent]:
     agents = Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION)
     return agents
 
+
+def agents_expired_inspection() -> List[Agent]:
+    agents = Agent.objects.filter(date_of_inspection__lt=datetime.now().date())
+    return agents
 
 def agents_without_inspection() -> List[Agent]:
     """Выбор аггентов без проверки"""
