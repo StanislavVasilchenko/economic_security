@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 from typing import List
 
-from celery.worker.consumer import agent
 from django.core.mail import EmailMessage
+from django.db.models import QuerySet
 
 from main.models import Agent, ReportStatus
 from app_config.settings import EMAIL_HOST_USER
@@ -57,17 +57,22 @@ def agents_for_inspection() -> List[Agent]:
     return agents
 
 
-def agents_under_inspection() -> List[Agent]:
+def agents_under_inspection() -> QuerySet[Agent]:
     """Выбор агентов которым отправлены письма и находящихся на проверке"""
     agents = Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION)
     return agents
 
 
 def agents_expired_inspection() -> List[Agent]:
-    agents = Agent.objects.filter(date_of_inspection__lt=datetime.now().date())
+    """Выбор агентов с просроченной датой проверки (кроме агентов со статусом на проверке)"""
+    date_inspection = datetime.now().date()
+    agents = Agent.objects.filter(date_of_inspection__lt=date_inspection,
+                                  report_status__in=[ReportStatus.VERIFIED, ReportStatus.NOT_VERIFIED],
+                                  email__isnull=False)
     return agents
+
 
 def agents_without_inspection() -> List[Agent]:
     """Выбор аггентов без проверки"""
-    agents = Agent.objects.filter()
+    # agents = Agent.objects.filter()
     ...
