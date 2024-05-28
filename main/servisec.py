@@ -68,7 +68,8 @@ def agents_expired_inspection() -> List[Agent]:
     date_inspection = datetime.now().date()
     agents = Agent.objects.filter(date_of_inspection__lt=date_inspection,
                                   report_status__in=[ReportStatus.VERIFIED, ReportStatus.NOT_VERIFIED],
-                                  email__isnull=False)
+                                  email__isnull=False,
+                                  is_active=True)
     return agents
 
 
