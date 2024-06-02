@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 
 # celery -A app_config worker -l INFO
+# python3 manage.py dumpdata main.agent > agents.json
 load_dotenv()
 
 DB_NAME = os.environ.get('DB_NAME')

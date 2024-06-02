@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.contrib import admin
 
@@ -7,10 +7,11 @@ from main.models import Agent, FileReport, ReportStatus
 
 @admin.register(Agent)
 class AgentAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'inn',
-                    'departure_date', 'date_of_inspection', 'counterparty_form',
+    list_display = ('name', 'email', 'inn',
+                    'date_of_inspection', 'counterparty_form',
                     'report_status', 'is_active')
     search_fields = ('name', 'email', 'inn')
+    list_editable = ('date_of_inspection', 'report_status',)
     list_filter = ('report_status', 'counterparty_form', 'date_of_inspection', 'is_active')
     actions = ['change_status', 'change_date', 'change_date_of_inspection', ]
     ordering = ('date_of_inspection',)
@@ -26,10 +27,11 @@ class AgentAdmin(admin.ModelAdmin):
     change_date.short_description = 'Заменить пустую дату'
 
     def change_date_of_inspection(self, request, queryset):
-        now = datetime.now().date()
-        queryset.update(date_of_inspection=now)
+        next_inspection = datetime.now().date() + timedelta(weeks=52)
+        queryset.update(date_of_inspection=next_inspection)
 
-    change_date_of_inspection.short_description = f"Изменить дату проверки на {datetime.now().date()}"
+    change_date_of_inspection.short_description = (f"Изменить дату проверки на"
+                                                   f" {datetime.now().date() + timedelta(weeks=52)}")
 
 
 @admin.register(FileReport)

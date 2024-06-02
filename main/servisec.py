@@ -17,7 +17,7 @@ def send_email_to_agent(agent: Agent):
         if agent.counterparty_form == 'Юридическое лицо' else f'Сылка на опросник :{URL_FL}',
         from_email=EMAIL_HOST_USER,
         to=[agent.email],
-        bcc=[EMAIL_HOST_USER]
+        bcc=[EMAIL_HOST_USER, 'a.smokvin@zelenaya.net']
     )
     email.send()
 
@@ -50,7 +50,7 @@ def agents_for_inspection() -> List[Agent]:
     """Выбор агентов для проверки которые были ранее провернены и у которых приблежается очередная
     дата проверки"""
     date_inspection = datetime.now()
-    agents = Agent.objects.filter(date_of_inspection__gte=date_inspection,
+    agents = Agent.objects.filter(date_of_inspection__gt=date_inspection,
                                   date_of_inspection__lte=date_inspection + timedelta(days=7),
                                   email__isnull=False,
                                   report_status=ReportStatus.VERIFIED)

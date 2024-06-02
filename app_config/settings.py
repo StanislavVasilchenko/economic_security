@@ -85,8 +85,8 @@ DATABASES = {
         'NAME': DB_NAME,
         'USER': DB_USER,
         'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        # 'HOST': 'db',
+        # 'HOST': DB_HOST,
+        'HOST': 'db',
         'PORT': DB_PORT
     }
 }
@@ -153,11 +153,11 @@ EMAIL_HOST_USER = HOST_USER
 EMAIL_HOST_PASSWORD = HOST_PASSWORD
 EMAIL_USE_SSL = False
 
-# CELERY_BEAT_SCHEDULE = {
-    # 'get_agents_for_inspection': {
-    #     'task': 'main.tasks.get_agents_for_inspection',
-    #     'schedule': crontab(hour='9', minute='00'),
-    # },
+CELERY_BEAT_SCHEDULE = {
+    'get_agents_for_inspection': {
+        'task': 'main.tasks.get_agents_for_inspection',
+        'schedule': crontab(hour='8', minute='00'),
+    },
     # 'get_agents_for_inspection': {
     #     'task': 'main.tasks.get_agents_for_inspection',
     #     'schedule': timedelta(seconds=30),
@@ -165,5 +165,5 @@ EMAIL_USE_SSL = False
     # 'check_date_of_inspection': {
     #     'task': 'main.tasks.check_date_of_inspection',
     #     'schedule': timedelta(seconds=20),
-#     },
-# }
+    # },
+}

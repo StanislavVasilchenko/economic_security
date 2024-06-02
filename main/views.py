@@ -1,12 +1,14 @@
 from datetime import datetime
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView
 
 from main.forms import AgentForm
 from main.models import Agent, ReportStatus
-from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection, agents_expired_inspection
+from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection, agents_expired_inspection, \
+    send_email_to_agent
 from main.tasks import get_agents_for_inspection, send_mail_to_agent
 
 
@@ -92,3 +94,11 @@ def send_email_agents_ex(request):
         send_mail_to_agent(agents_report)
         # send_email_to_agent_expired.delay()
         return HttpResponseRedirect(reverse_lazy('main:index'))
+
+
+def send_mail_one_agent(request, pk):
+    """Отправка письма одному агенту"""
+    # ДОРАБОТАТЬ
+    agent = get_object_or_404(Agent, id=pk)
+    send_email_to_agent(agent)
+    return redirect(to='main:agent_detail', pk=pk)
