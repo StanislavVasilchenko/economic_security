@@ -8,11 +8,12 @@ from django.views.generic import TemplateView, ListView, CreateView, DetailView,
 from main.forms import AgentForm
 from main.models import Agent, ReportStatus
 from main.servisec import context_data_index, agents_for_inspection, agents_under_inspection, agents_expired_inspection, \
-    send_email_to_agent
+    send_email_to_agent, agents_without_mail
 from main.tasks import get_agents_for_inspection, send_mail_to_agent
 
 
 class HomeView(TemplateView):
+    """Главная страница"""
     template_name = 'main/index.html'
     model = Agent
 
@@ -23,6 +24,7 @@ class HomeView(TemplateView):
 
 
 class AgentListView(ListView):
+    """Вывод всех агентов"""
     model = Agent
 
     def get_context_data(self, **kwargs):
@@ -32,17 +34,19 @@ class AgentListView(ListView):
 
 
 class AgentDetailView(DetailView):
+    """Карточка агента"""
     model = Agent
 
 
 class AgentUpdateView(UpdateView):
+    """Обновление агента"""
     model = Agent
     form_class = AgentForm
     success_url = reverse_lazy('main:index')
 
 
 class AgentForInspectionView(TemplateView):
-    """Выбор КА для проверки"""
+    """Выбор агентов для проверки"""
     template_name = 'main/agents_for_inspections.html'
     model = Agent
 
@@ -53,12 +57,14 @@ class AgentForInspectionView(TemplateView):
 
 
 class AgentCreateView(CreateView):
+    """Создание агента"""
     model = Agent
     form_class = AgentForm
     success_url = reverse_lazy('main:agents-list')
 
 
 class AgentPendingConfirmationView(TemplateView):
+    """Список агентов находящихся на проверке"""
     model = Agent
     template_name = 'main/agents_pending_confirmation.html'
 
@@ -69,12 +75,24 @@ class AgentPendingConfirmationView(TemplateView):
 
 
 class AgentWithExpired(TemplateView):
+    """Список агентов с просроченной датой проверки"""
     model = Agent
     template_name = 'main/agents_with_expired_date.html'
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['object_list'] = agents_expired_inspection()
+        return context_data
+
+
+class AgentsWithoutEmail(TemplateView):
+    """Список агентов без электронной почты"""
+    model = Agent
+    template_name = 'main/agents_without_mail.html'
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = agents_without_mail()
         return context_data
 
 

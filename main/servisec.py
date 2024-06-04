@@ -32,16 +32,24 @@ def change_after_send_email(agent: Agent):
     agent.save()
 
 
+def agents_without_mail():
+    agents = Agent.objects.filter(email__isnull=True,
+                                  is_active=True)
+    return agents
+
+
 def context_data_index():
     """Данные для индексной страницы
     agents_count - Кол-во Агентов которые должны быть проверены в ближайшие 7 дней
     agents_under_inspection - Кол-во Агентов которым отправлены опросники
-    verification_period_expired - Кол-во Агентов с просроченной датой проверки"""
+    verification_period_expired - Кол-во Агентов с просроченной датой проверки
+    agents_without_mail - агенты с отсутствующем адресом эл. почты"""
 
     context_data = {
         'agents_count': agents_for_inspection().count(),
         'agents_under_inspection': agents_under_inspection().count(),
-        'verification_period_expired': agents_expired_inspection().count()
+        'verification_period_expired': agents_expired_inspection().count(),
+        'agents_without_mail': agents_without_mail()
     }
     return context_data
 
@@ -59,7 +67,8 @@ def agents_for_inspection() -> List[Agent]:
 
 def agents_under_inspection() -> QuerySet[Agent]:
     """Выбор агентов которым отправлены письма и находящихся на проверке"""
-    agents = Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION)
+    agents = Agent.objects.filter(report_status=ReportStatus.UNDER_INSPECTION,
+                                  is_active=True)
     return agents
 
 

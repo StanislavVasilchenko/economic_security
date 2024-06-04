@@ -2,19 +2,14 @@
 {% block content %}
 
             <p class="d-inline-flex gap-1">
-{#                <form method="post" action="{% url 'main:send' %}">#}
-{#                    {% csrf_token %}#}
-{#                <button class="btn btn-outline-danger" type="submit"#}
-{#                        name="send_agent_report" value="send_agent_report">Отправить на проверку</button>#}
-{#                </form>#}
                 <a class="btn btn-success" methods="sub" href="{% url 'main:agent-update' object.pk %}">
                     Изменить
                 </a>
-                {% if object.date_of_inspection %}
+                {% if object.date_of_inspection and object.email %}
                 <a class="btn btn-warning ml-4" methods="sub" href="{% url 'main:send_email_one_agent' object.pk %}">
                     Отправить письмо
                 </a>
-                {% else %}
+                {% elif object.email %}
                     <a class="btn btn-warning ml-4" methods="sub" href="{% url 'main:agent-detailt' object.pk %}">
                     Письмо отправлеено {{ object.departure_date }}
                 </a>

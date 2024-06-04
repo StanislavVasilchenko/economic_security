@@ -5,7 +5,7 @@
         <a class="me-3 py-2 link-body-emphasis text-success" href="{% url 'main:agents-list' %}">Список КА</a>
         <a class="me-3 py-2 link-body-emphasis text-warning" href="{% url 'main:under_inspection' %}">Ожидающие подтверждения</a>
         <a class="me-3 py-2 link-body-emphasis text-danger" href="{% url 'main:expired_inspection' %}">Просроченные</a>
-        <a class="py-2 link-body-emphasis text-decoration-none" href="#">Отсутствует email</a>
+        <a class="py-2 link-body-emphasis text-decoration-none" href="{% url 'main:agents_not_email' %}">Отсутствует email</a>
     </nav>
 </div>
 
