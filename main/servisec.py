@@ -33,6 +33,7 @@ def change_after_send_email(agent: Agent):
 
 
 def agents_without_mail():
+    """Выбор агентов без эл.почты"""
     agents = Agent.objects.filter(email__isnull=True,
                                   is_active=True)
     return agents
@@ -80,9 +81,3 @@ def agents_expired_inspection() -> List[Agent]:
                                   email__isnull=False,
                                   is_active=True)
     return agents
-
-
-def agents_without_inspection() -> List[Agent]:
-    """Выбор аггентов без проверки"""
-    # agents = Agent.objects.filter()
-    ...
