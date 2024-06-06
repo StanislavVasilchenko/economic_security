@@ -156,7 +156,7 @@ EMAIL_USE_SSL = False
 CELERY_BEAT_SCHEDULE = {
     'get_agents_for_inspection': {
         'task': 'main.tasks.get_agents_for_inspection',
-        'schedule': crontab(hour='8', minute='00'),
+        'schedule': crontab(hour='7', minute='00'),
     },
     # 'get_agents_for_inspection': {
     #     'task': 'main.tasks.get_agents_for_inspection',
