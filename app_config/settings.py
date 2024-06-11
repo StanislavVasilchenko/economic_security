@@ -158,12 +158,8 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'main.tasks.get_agents_for_inspection',
         'schedule': crontab(hour='7', minute='00'),
     },
-    # 'get_agents_for_inspection': {
-    #     'task': 'main.tasks.get_agents_for_inspection',
-    #     'schedule': timedelta(seconds=30),
-    # },
-    # 'check_date_of_inspection': {
-    #     'task': 'main.tasks.check_date_of_inspection',
-    #     'schedule': timedelta(seconds=20),
-    # },
+    'create_fixtures': {
+        'task': 'main.tasks.create_fixture_agents',
+        'schedule': timedelta(hours=2),
+    },
 }
