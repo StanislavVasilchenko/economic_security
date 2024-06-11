@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from celery import shared_task
+from django.core.management import call_command
 from django.db.models import QuerySet
 
 from main.models import Agent, ReportStatus
@@ -32,3 +33,10 @@ def check_date_of_inspection():
         for agent in agents:
             agent.report_status = ReportStatus.NOT_VERIFIED
             agent.save()
+
+
+@shared_task
+def create_fixture_agents():
+    # Доработать, не создает фикстуры
+    call_command("dumpdata", "main.agent", output="agents.json")
+    print('ok')
