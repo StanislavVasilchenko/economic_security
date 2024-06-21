@@ -1,0 +1,6 @@
+django==4.2.7
+python-dotenv
+psycopg2-binary
+celery
+django-celery-beat
+redis

@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+        <p class="d-inline-flex gap-1">
+            <a class="btn btn-success" href="{% url 'main:create-agent' %}">
+                Добавить КА
+            </a>
+        </p>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Наименование КА</th>
+            <th scope="col">email</th>
+            <th scope="col">ИНН</th>
+            <th scope="col">Дата проверки</th>
+            <th scope="col">Дата след. проверки</th>
+            <th scope="col">Форма</th>
+            <th scope="col">Статус проверки</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for object in object_list %}
+            <tr>
+
+                <th scope="row">{{ forloop.counter }}</th>
+
+                    <td><a href="{% url 'main:agent-detailt' object.pk %}">{{ object.name }}</a></td>
+
+                    <td>{{ object.email }}</td>
+
+
+                <td>{{ object.inn }}</td>
+                <td>{{ object.departure_date }}</td>
+                <td>{{ object.date_of_inspection }}</td>
+                <td>{{ object.counterparty_form }}</td>
+                <td>{{ object.report_status }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

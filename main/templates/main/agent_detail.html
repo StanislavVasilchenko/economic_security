@@ -1,0 +1,55 @@
+{% extends 'main/base.html' %}
+{% block content %}
+
+            <p class="d-inline-flex gap-1">
+                <a class="btn btn-success" methods="sub" href="{% url 'main:agent-update' object.pk %}">
+                    Изменить
+                </a>
+                {% if object.date_of_inspection and object.email %}
+                <a class="btn btn-warning ml-4" methods="sub" href="{% url 'main:send_email_one_agent' object.pk %}">
+                    Отправить письмо
+                </a>
+                {% elif object.email %}
+                    <a class="btn btn-warning ml-4" methods="sub" href="{% url 'main:agent-detailt' object.pk %}">
+                    Письмо отправлеено {{ object.departure_date }}
+                </a>
+                {% endif %}
+            </p>
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Наименование КА</th>
+            <th scope="col">email</th>
+            <th scope="col">ИНН</th>
+            <th scope="col">Дата проверки</th>
+            <th scope="col">Дата след. проверки</th>
+            <th scope="col">Форма</th>
+            <th scope="col">Статус проверки</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+
+            <th scope="row">{{ forloop.counter }}</th>
+
+            <td>{{ object.name }}</td>
+
+            <td>{{ object.email }}</td>
+
+
+            <td>{{ object.inn }}</td>
+            <td>{{ object.departure_date }}</td>
+            <td>{{ object.date_of_inspection }}</td>
+            <td>{{ object.counterparty_form }}</td>
+            <td>{{ object.report_status }}</td>
+
+        </tr>
+
+        </tbody>
+    </table>
+
+{% endblock %}
