@@ -13,5 +13,5 @@ class Command(BaseCommand):
         for agent in data:
             try:
                 Agent.objects.create(**agent)
-            except Exception as e:
+            except Exception:
                 continue
