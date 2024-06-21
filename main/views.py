@@ -110,13 +110,11 @@ def send_email_agents_ex(request):
                                              report_status__in=[ReportStatus.VERIFIED, ReportStatus.NOT_VERIFIED],
                                              email__isnull=False)
         send_mail_to_agent(agents_report)
-        # send_email_to_agent_expired.delay()
         return HttpResponseRedirect(reverse_lazy('main:index'))
 
 
 def send_mail_one_agent(request, pk):
     """Отправка письма одному агенту"""
-    # ДОРАБОТАТЬ
     agent = get_object_or_404(Agent, id=pk)
     send_email_to_agent(agent)
     return redirect(to='main:agent_detail', pk=pk)

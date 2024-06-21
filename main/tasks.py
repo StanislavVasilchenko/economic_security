@@ -37,6 +37,4 @@ def check_date_of_inspection():
 
 @shared_task
 def create_fixture_agents():
-    # Доработать, не создает фикстуры
     call_command("dumpdata", "main.agent", output="agents.json")
-    print('ok')

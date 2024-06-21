@@ -1,5 +1,4 @@
 from django.core.management import BaseCommand
-from psycopg2 import IntegrityError
 
 from private_keys import FILE_NAME
 import json
@@ -16,14 +15,3 @@ class Command(BaseCommand):
                 Agent.objects.create(**agent)
             except Exception as e:
                 continue
-
-        # agents = [Agent(**agent) for agent in data]
-        #
-        # for agent in agents:
-        #     try:
-        #         Agent.objects.create(agent=agent)
-        #         # agent.save()
-        #     except Exception as e:
-        #         continue
-
-
